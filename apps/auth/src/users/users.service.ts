@@ -16,20 +16,15 @@ export class UsersService {
 
   // crud operation for user
   async create(createUserDto: CreateUserDto) {
-    try {
-      await this.validateCreateUserDto(createUserDto);
-      let data: UserDocument = await this.usersRepository.create({
-        ...createUserDto,
-        password: await bcrypt.hash(createUserDto.password, 10),
-      });
-
-      return {
-        status: 'success',
-        data: data,
-      };
-    } catch (error) {
-      throw new HttpException('Internal server error', error.message);
-    }
+    await this.validateCreateUserDto(createUserDto);
+    let data: UserDocument = await this.usersRepository.create({
+      ...createUserDto,
+      password: await bcrypt.hash(createUserDto.password, 10),
+    });
+    return {
+      status: 'success',
+      data: data,
+    };
   }
 
   async findAll() {
